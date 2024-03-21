@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      MYSQL_HOST: 'express-api-db'
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_DATABASE: 'express_api'
+      MYSQL_USER: 'db_user'
+      MYSQL_PASSWORD: '123456'
+      KUBERNETES: false
+    depends_on:
+      - db
+
+  db:
+    container_name: 'express-api-db'
+    image: mariadb:10.7.3
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_DATABASE: 'express_api'
+      MYSQL_USER: 'db_user'
+      MYSQL_PASSWORD: '123456'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+   
+
